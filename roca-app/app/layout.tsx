@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="apple-mobile-web-app-title" content="Horta do Porto" />
       </head>
 
-      <body className="min-h-screen bg-gradient-to-br from-amber-50 via-lime-50 to-green-100 text-slate-800 antialiased">
+      <body className="min-h-screen text-slate-800 antialiased">
         <NavBar />
 
         <main className="pt-16 min-h-screen">
