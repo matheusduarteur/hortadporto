@@ -1,6 +1,8 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { supabase } from '@/lib/supabaseClient'
 
 type Atalho = {
   href: string
@@ -17,14 +19,137 @@ const atalhos: Atalho[] = [
   { href: '/despesas', label: 'Despesas', icon: '💸' },
 ]
 
+type DashboardResumo = {
+  receita: number
+  despesa: number
+  lucro: number
+  ovos: number
+}
+
+function getMonthRange(date = new Date()) {
+  const ano = date.getFullYear()
+  const mes = date.getMonth() // 0-11
+
+  const inicio = new Date(ano, mes, 1)
+  const fim = new Date(ano, mes + 1, 1)
+
+  const pad = (n: number) => String(n).padStart(2, '0')
+
+  // formato 'YYYY-MM-DD' para comparar com coluna date
+  const inicioStr = `${inicio.getFullYear()}-${pad(inicio.getMonth() + 1)}-01`
+  const fimStr = `${fim.getFullYear()}-${pad(fim.getMonth() + 1)}-01`
+
+  // label tipo "Março 2026"
+  const labelMes = inicio.toLocaleDateString('pt-BR', {
+    month: 'long',
+    year: 'numeric',
+  })
+
+  return { inicioStr, fimStr, labelMes }
+}
+
 export default function DashboardPage() {
-  const relatorio = {
-    mes: 'Março 2026',
-    receita: 'R$ 0,00',
-    despesa: 'R$ 0,00',
-    lucro: 'R$ 0,00',
-    ovos: '0 ovos',
-  }
+  const [{ inicioStr, fimStr, labelMes }] = useState(() => getMonthRange())
+  const [resumo, setResumo] = useState<DashboardResumo | null>(null)
+  const [loadingResumo, setLoadingResumo] = useState(true)
+
+  useEffect(() => {
+    async function carregarResumo() {
+      try {
+        // 1) vendas -> sales.total
+        const { data: vendas, error: errVendas } = await supabase
+          .from('sales')
+          .select('total, date')
+          .gte('date', inicioStr)
+          .lt('date', fimStr)
+
+        if (errVendas) {
+          console.error('Erro ao carregar vendas:', errVendas)
+        }
+
+        const receita =
+          (vendas ?? []).reduce(
+            (acc, v) => acc + Number((v as any).total ?? 0),
+            0
+          ) || 0
+
+        // 2) despesas -> expenses.amount
+        const { data: despesas, error: errDespesas } = await supabase
+          .from('expenses')
+          .select('amount, date')
+          .gte('date', inicioStr)
+          .lt('date', fimStr)
+
+        if (errDespesas) {
+          console.error('Erro ao carregar despesas:', errDespesas)
+        }
+
+        const despesa =
+          (despesas ?? []).reduce(
+            (acc, d) => acc + Number((d as any).amount ?? 0),
+            0
+          ) || 0
+
+        // 3) ovos -> egg_records.quantity
+        const { data: ovosData, error: errOvos } = await supabase
+          .from('egg_records')
+          .select('quantity, date')
+          .gte('date', inicioStr)
+          .lt('date', fimStr)
+
+        if (errOvos) {
+          console.error('Erro ao carregar ovos:', errOvos)
+        }
+
+        const ovos =
+          (ovosData ?? []).reduce(
+            (acc, o) => acc + Number((o as any).quantity ?? 0),
+            0
+          ) || 0
+
+        setResumo({
+          receita,
+          despesa,
+          lucro: receita - despesa,
+          ovos,
+        })
+      } catch (e) {
+        console.error('Erro geral ao carregar resumo do dashboard:', e)
+      } finally {
+        setLoadingResumo(false)
+      }
+    }
+
+    carregarResumo()
+  }, [inicioStr, fimStr])
+
+  const receitaText =
+    resumo && !loadingResumo
+      ? `R$ ${resumo.receita.toFixed(2)}`
+      : loadingResumo
+      ? 'Carregando...'
+      : 'R$ 0,00'
+
+  const despesaText =
+    resumo && !loadingResumo
+      ? `R$ ${resumo.despesa.toFixed(2)}`
+      : loadingResumo
+      ? 'Carregando...'
+      : 'R$ 0,00'
+
+  const lucroText =
+    resumo && !loadingResumo
+      ? `R$ ${resumo.lucro.toFixed(2)}`
+      : loadingResumo
+      ? 'Carregando...'
+      : 'R$ 0,00'
+
+  const ovosText =
+    resumo && !loadingResumo
+      ? `${resumo.ovos} ovos`
+      : loadingResumo
+      ? 'Carregando...'
+      : '0 ovos'
 
   return (
     <div className="flex flex-col gap-8">
@@ -57,7 +182,7 @@ export default function DashboardPage() {
         ))}
       </section>
 
-      {/* CARD DE RELATÓRIOS IGUAL À FOTO */}
+      {/* CARD DE RELATÓRIOS */}
       <section className="px-4">
         <Link
           href="/relatorios"
@@ -75,7 +200,7 @@ export default function DashboardPage() {
                   Relatórios
                 </span>
                 <span className="text-sm font-semibold text-emerald-900">
-                  {relatorio.mes}
+                  {labelMes}
                 </span>
               </div>
             </div>
@@ -92,36 +217,28 @@ export default function DashboardPage() {
               <span className="uppercase tracking-[0.22em] text-emerald-600 text-[10px]">
                 Receita
               </span>
-              <span className="mt-1 text-sm font-semibold">
-                {relatorio.receita}
-              </span>
+              <span className="mt-1 text-sm font-semibold">{receitaText}</span>
             </div>
 
             <div className="flex flex-col">
               <span className="uppercase tracking-[0.22em] text-emerald-600 text-[10px]">
                 Despesa
               </span>
-              <span className="mt-1 text-sm font-semibold">
-                {relatorio.despesa}
-              </span>
+              <span className="mt-1 text-sm font-semibold">{despesaText}</span>
             </div>
 
             <div className="flex flex-col">
               <span className="uppercase tracking-[0.22em] text-emerald-600 text-[10px]">
                 Lucro
               </span>
-              <span className="mt-1 text-sm font-semibold">
-                {relatorio.lucro}
-              </span>
+              <span className="mt-1 text-sm font-semibold">{lucroText}</span>
             </div>
 
             <div className="flex flex-col">
               <span className="uppercase tracking-[0.22em] text-emerald-600 text-[10px]">
                 Ovos
               </span>
-              <span className="mt-1 text-sm font-semibold">
-                {relatorio.ovos}
-              </span>
+              <span className="mt-1 text-sm font-semibold">{ovosText}</span>
             </div>
           </div>
 
