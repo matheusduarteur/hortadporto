@@ -55,7 +55,7 @@ function Header() {
 }
 
 /* =========================
-   CARD DE CLIMA (USANDO OPENWEATHER)
+   CARD DE CLIMA (OpenWeather)
    ========================= */
 
 type WeatherData = {
@@ -87,6 +87,8 @@ function WeatherCard() {
       setLoading(false)
       return
     }
+
+    let intervalId: number | undefined
 
     async function fetchWeather() {
       try {
@@ -133,11 +135,29 @@ function WeatherCard() {
       }
     }
 
+    // 1) busca quando abre
     fetchWeather()
 
-    // Se depois você quiser auto-atualizar a cada 10 minutos, descomenta:
-    // const intervalId = setInterval(fetchWeather, 10 * 60 * 1000)
-    // return () => clearInterval(intervalId)
+    // 2) busca de novo a cada 10 minutos (enquanto estiver ativo)
+    intervalId = window.setInterval(fetchWeather, 10 * 60 * 1000)
+
+    // 3) quando a aba voltar a ficar visível (depois de minimizar / trocar app),
+    //     busca de novo na hora
+    function handleVisibilityChange() {
+      if (document.visibilityState === 'visible') {
+        fetchWeather()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    // limpeza quando o componente for desmontado
+    return () => {
+      if (intervalId !== undefined) {
+        clearInterval(intervalId)
+      }
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
   }, [])
 
   const tempText =
