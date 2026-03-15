@@ -35,7 +35,7 @@ export default function DashboardPage() {
           Painel da Horta
         </h1>
         <p className="mt-1 text-[11px] text-emerald-800/85">
-          Acesse rapidamente cada área da roça do seu pai.
+          Clique no ícone para acessar cada área.
         </p>
       </div>
 
