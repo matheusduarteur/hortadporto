@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+body {
+  background-color: #faf5e4;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+@layer components {
+  .input-field {
+    @apply w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white;
+  }
+
+  .btn-primary {
+    @apply bg-green-700 hover:bg-green-800 text-white px-6 py-2.5 rounded-lg font-medium text-sm disabled:opacity-50 transition-colors cursor-pointer;
+  }
+
+  .btn-delete {
+    @apply text-red-500 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded text-xs font-medium transition-colors cursor-pointer;
+  }
+}

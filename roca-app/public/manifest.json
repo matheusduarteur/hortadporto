@@ -1,0 +1,16 @@
+{
+  "name": "Roça App",
+  "short_name": "Roça App",
+  "description": "Sistema de gestão rural simples e prático",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf5e4",
+  "theme_color": "#14532d",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
