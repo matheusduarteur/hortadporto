@@ -1,66 +1,35 @@
 'use client'
 
 import Link from 'next/link'
-import {
-  Egg,
-  LineChart,
-  ShoppingBag,
-  Sprout,
-  Fish,
-  Milk,
-  PiggyBank,
-} from 'lucide-react'
 
 type Atalho = {
   href: string
   label: string
-  icon: React.ReactNode
+  icon: string
 }
 
 const atalhos: Atalho[] = [
-  {
-    href: '/galinhas',
-    label: 'Galinhas',
-    icon: <Egg className="h-7 w-7" />,
-  },
-  {
-    href: '/vacas',
-    label: 'Vacas',
-    icon: <Milk className="h-7 w-7" />,
-  },
-  {
-    href: '/tilapia',
-    label: 'Tilápia',
-    icon: <Fish className="h-7 w-7" />,
-  },
-  {
-    href: '/horta',
-    label: 'Horta',
-    icon: <Sprout className="h-7 w-7" />,
-  },
-  {
-    href: '/vendas',
-    label: 'Vendas',
-    icon: <ShoppingBag className="h-7 w-7" />,
-  },
-  {
-    href: '/despesas',
-    label: 'Despesas',
-    icon: <PiggyBank className="h-7 w-7" />,
-  },
+  { href: '/galinhas', label: 'Galinhas', icon: '🐔' },
+  { href: '/vacas', label: 'Vacas', icon: '🐄' },
+  { href: '/tilapia', label: 'Tilápia', icon: '🐟' },
+  { href: '/horta', label: 'Horta', icon: '🥬' },
+  { href: '/vendas', label: 'Vendas', icon: '🛒' },
+  { href: '/despesas', label: 'Despesas', icon: '💸' },
 ]
 
 export default function DashboardPage() {
+  // Tudo zerado no relatório
   const relatorio = {
     mes: 'Março 2026',
-    receita: 'R$ 1.200,00',
-    despesa: 'R$ 800,00',
-    lucro: 'R$ 400,00',
-    ovos: '320 ovos',
+    receita: 'R$ 0,00',
+    despesa: 'R$ 0,00',
+    lucro: 'R$ 0,00',
+    ovos: '0 ovos',
   }
 
   return (
     <div className="flex flex-col gap-6">
+      {/* TÍTULO / SUBTÍTULO DA PÁGINA */}
       <div className="text-center">
         <h1 className="text-sm font-semibold tracking-[0.25em] text-emerald-900 uppercase">
           Painel da Horta
@@ -70,6 +39,7 @@ export default function DashboardPage() {
         </p>
       </div>
 
+      {/* GRADE DE ATALHOS COM EMOJI REDONDO */}
       <section className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         {atalhos.map((item) => (
           <Link
@@ -77,7 +47,7 @@ export default function DashboardPage() {
             href={item.href}
             className="flex flex-col items-center gap-2"
           >
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-900 shadow-sm">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-2xl shadow-sm">
               {item.icon}
             </div>
             <span className="text-[12px] font-medium text-emerald-900 text-center">
@@ -87,15 +57,17 @@ export default function DashboardPage() {
         ))}
       </section>
 
+      {/* CARD ESPECIAL DE RELATÓRIOS (TUDO ZERADO) */}
       <section>
         <Link
           href="/relatorios"
           className="block rounded-3xl border border-emerald-900/12 bg-white/95 px-4 py-4 shadow-[0_8px_20px_rgba(0,0,0,0.06)]"
         >
           <div className="flex items-center justify-between gap-3">
+            {/* ÍCONE + TÍTULO */}
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-900">
-                <LineChart className="h-6 w-6" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-2xl">
+                📊
               </div>
               <div className="flex flex-col">
                 <span className="text-[11px] uppercase tracking-[0.2em] text-emerald-700">
@@ -107,11 +79,13 @@ export default function DashboardPage() {
               </div>
             </div>
 
+            {/* Indicador de seta */}
             <div className="hidden sm:flex h-8 w-8 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
               <span className="text-lg">›</span>
             </div>
           </div>
 
+          {/* DADOS DO MÊS (ZERADOS) */}
           <div className="mt-4 grid grid-cols-2 gap-3 text-[11px] text-emerald-900 sm:grid-cols-4">
             <div className="flex flex-col">
               <span className="uppercase tracking-[0.18em] text-emerald-600 text-[10px]">
