@@ -12,15 +12,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <head>
-        <meta name="theme-color" content="#0f5c2e" />
+        <meta name="theme-color" content="#166534" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Horta do Porto" />
       </head>
-      <body className="min-h-screen bg-gradient-to-br from-[#f8f4ea] via-[#f6f1e5] to-[#efe7d5] text-slate-800 antialiased">
+
+      <body className="min-h-screen bg-gradient-to-br from-amber-50 via-lime-50 to-green-100 text-slate-800 antialiased">
         <NavBar />
-        <main className="min-h-screen pt-16">
-          <div className="mx-auto max-w-5xl px-4 py-6">
+
+        <main className="pt-16 min-h-screen">
+          <div className="max-w-5xl mx-auto px-4 py-6">
             {children}
           </div>
         </main>
