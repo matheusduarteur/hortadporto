@@ -31,7 +31,7 @@ export default function NavBar() {
 
           <div className="flex flex-col leading-tight">
             <span className="text-lg font-bold tracking-wide">
-              Horta do Porto
+              Horta d' Porto
             </span>
             <span className="text-xs text-green-200">
               gestão da roça
