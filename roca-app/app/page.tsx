@@ -38,26 +38,28 @@ export default function DashboardPage() {
         </p>
       </section>
 
-      {/* GRADE DE ÍCONES REDONDINHOS */}
-      <section className="grid grid-cols-2 gap-6 px-4 sm:grid-cols-3">
+      {/* GRADE DE ÍCONES DESTACADOS */}
+      <section className="grid grid-cols-2 gap-4 px-4 sm:grid-cols-3">
         {atalhos.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="flex flex-col items-center gap-2"
+            className="group flex flex-col items-center gap-2 rounded-2xl border border-emerald-700/60 bg-emerald-50/90 px-3 py-3 shadow-sm hover:border-emerald-800 hover:shadow-md hover:bg-emerald-100/90 transition"
           >
-            {/* Bolinha verde com emoji dentro */}
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#c9f5d5] text-2xl shadow-sm">
-              {item.icon}
+            {/* Bolinha verde escura com emoji dentro */}
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-700/95 shadow-sm">
+              <span className="text-3xl leading-none group-hover:scale-110 transition-transform">
+                {item.icon}
+              </span>
             </div>
-            <span className="text-[12px] font-medium text-emerald-900 text-center">
+            <span className="text-[12px] font-semibold text-emerald-900 text-center">
               {item.label}
             </span>
           </Link>
         ))}
       </section>
 
-      {/* CARD DE RELATÓRIOS IGUAL À FOTO */}
+      {/* CARD DE RELATÓRIOS IGUAL À FOTO (mantido, só herdando o novo clima lá em cima) */}
       <section className="px-4">
         <Link
           href="/relatorios"

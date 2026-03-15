@@ -25,22 +25,21 @@ function Header() {
   return (
     <header className="w-full border-b border-emerald-900/10 bg-[#fdf9ec]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-8">
-        {/* LOGO + TÍTULO À ESQUERDA */}
+        {/* LOGO + NOME DO APP À ESQUERDA */}
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full overflow-hidden border border-emerald-700/30 bg-[#fdf9ec] flex items-center justify-center">
+          {/* ÍCONE / LOGO REDONDO */}
+          <div className="h-10 w-10 rounded-full overflow-hidden border border-emerald-700/40 bg-[#fdf9ec] flex items-center justify-center shadow-sm">
             <img
               src="/horta-logo.png"
-              alt="Horta d’Porto"
+              alt="Roça App"
               className="h-8 w-8 object-contain"
             />
           </div>
 
+          {/* NOME DO APP (Roça App) COM FONTE MAIS MARCANTE */}
           <div className="flex flex-col">
-            <span className="text-sm font-semibold tracking-[0.10em] text-emerald-900 uppercase">
-              Horta d’Porto
-            </span>
-            <span className="text-[11px] tracking-[0.20em] text-emerald-700 uppercase">
-              Gestão da Roça
+            <span className="bg-gradient-to-r from-emerald-900 via-emerald-700 to-lime-700 bg-clip-text text-lg font-black uppercase italic tracking-[0.18em] text-transparent">
+              Roça App
             </span>
           </div>
         </div>
@@ -92,7 +91,7 @@ function WeatherCard() {
 
     async function fetchWeather() {
       try {
-        // >>> AQUI usamos sua latitude/longitude de Mirronhos / Morrinhos - Poções - BA
+        // AQUI usamos sua latitude/longitude de Mirronhos / Morrinhos - Poções - BA
         const res = await fetch(
           'https://api.openweathermap.org/data/2.5/weather?lat=-14.620972971351303&lon=-40.29520315068608&units=metric&lang=pt_br&appid=' +
             apiKey
@@ -142,7 +141,7 @@ function WeatherCard() {
     // 2) busca de novo a cada 10 minutos (enquanto estiver ativo)
     intervalId = window.setInterval(fetchWeather, 10 * 60 * 1000)
 
-    // 3) quando a aba voltar a ficar visível (depois de minimizar / trocar app), busca de novo na hora
+    // 3) quando a aba voltar a ficar visível, busca de novo na hora
     function handleVisibilityChange() {
       if (document.visibilityState === 'visible') {
         fetchWeather()
