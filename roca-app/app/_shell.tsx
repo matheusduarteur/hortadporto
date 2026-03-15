@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react'
 export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-[#f7f3ea] text-slate-900 flex flex-col">
-      {/* TOPO: LOGO PEQUENA + CLIMA */}
+      {/* TOPO: LOGO + CLIMA */}
       <Header />
 
-      {/* CONTEÚDO DA PÁGINA (seu Painel da Horta + emojis + relatório) */}
+      {/* CONTEÚDO: aqui entra o page.tsx (Painel da Horta, emojis, relatório) */}
       <main className="flex-1 px-4 pb-6 pt-3 md:px-8 md:pb-8">
         <div className="mx-auto max-w-6xl">{children}</div>
       </main>
@@ -18,7 +18,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 }
 
 /* =========================
-   HEADER: LOGO + CLIMA
+   HEADER: LOGO + CARD DE CLIMA
    ========================= */
 
 function Header() {
@@ -85,7 +85,8 @@ function WeatherCard() {
     async function fetchWeather() {
       try {
         const res = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=Morrinhos,BR&units=metric&lang=pt_br&appid=${apiKey}`
+          'https://api.openweathermap.org/data/2.5/weather?q=Morrinhos,BR&units=metric&lang=pt_br&appid=' +
+            apiKey
         )
 
         if (!res.ok) {
@@ -130,20 +131,23 @@ function WeatherCard() {
 
   return (
     <div className="flex items-center gap-2 rounded-2xl bg-emerald-100/90 px-3 py-2 shadow-sm">
-      {/* Ícone de clima simples */}
+      {/* bolinha com ícone de clima */}
       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-emerald-50 text-sm">
         ☁️
       </div>
 
       <div className="flex flex-col leading-tight">
+        {/* Temperatura */}
         <span className="text-xs font-semibold text-emerald-900">
           {loading ? 'Carregando...' : tempText}
         </span>
+
+        {/* Descrição (sem "Morrinhos") */}
         <span className="text-[10px] text-emerald-800">
-          {loading
-            ? 'Clima de Morrinhos'
-            : weather.description || 'Clima de Morrinhos'}
+          {loading ? 'Carregando' : weather.description || 'Sem dados'}
         </span>
+
+        {/* Umidade + se vai chover */}
         <span className="text-[9px] text-emerald-800/80">
           Umidade {humidityText} · {rainText}
         </span>
