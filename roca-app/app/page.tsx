@@ -70,85 +70,70 @@ export default function DashboardPage() {
   const resultado = data.totalRevenue - data.totalExpenses
 
   return (
-    <div className="space-y-6">
-      <div className="rounded-3xl border border-green-200 bg-white/80 p-5 shadow-sm">
-        <h1 className="text-3xl font-extrabold tracking-tight text-green-900">
+    <div className="space-y-5">
+      <div className="rounded-[28px] border border-white/60 bg-gradient-to-br from-white via-emerald-50 to-amber-50 px-5 py-5 shadow-[0_12px_35px_rgba(0,0,0,0.08)]">
+        <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">
           🏡 Resumo
         </h1>
-        <p className="mt-1 text-base capitalize text-amber-800">{monthLabel}</p>
-        <p className="mt-2 text-sm text-gray-500">
-          Veja aqui um resumo rápido da produção e das finanças do mês.
-        </p>
+        <p className="mt-1 text-lg font-medium capitalize text-amber-700">{monthLabel}</p>
       </div>
 
       {loading ? (
-        <div className="rounded-3xl border border-green-200 bg-white p-10 text-center text-green-800 shadow-sm">
-          Carregando informações...
+        <div className="rounded-[28px] border border-white/60 bg-white/90 px-5 py-10 text-center text-emerald-900 shadow-[0_12px_35px_rgba(0,0,0,0.08)]">
+          Carregando...
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          <div className="rounded-3xl border border-amber-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="rounded-[28px] border border-amber-200 bg-gradient-to-br from-white to-amber-50 p-5 shadow-[0_10px_30px_rgba(245,158,11,0.12)]">
             <div className="mb-3 text-4xl">🐔</div>
-            <div className="text-sm font-semibold uppercase tracking-wide text-gray-500">
-              Ovos no mês
-            </div>
-            <div className="mt-2 text-4xl font-extrabold text-amber-700">
-              {data.totalEggs}
-            </div>
-            <div className="mt-1 text-sm text-gray-400">unidades</div>
+            <div className="text-[15px] font-semibold text-slate-500">Ovos (mês)</div>
+            <div className="mt-2 text-3xl font-extrabold text-amber-700">{data.totalEggs}</div>
+            <div className="mt-1 text-sm text-slate-400">unidades</div>
           </div>
 
-          <div className="rounded-3xl border border-blue-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <div className="rounded-[28px] border border-sky-200 bg-gradient-to-br from-white to-sky-50 p-5 shadow-[0_10px_30px_rgba(14,165,233,0.12)]">
             <div className="mb-3 text-4xl">🐄</div>
-            <div className="text-sm font-semibold uppercase tracking-wide text-gray-500">
-              Leite no mês
-            </div>
-            <div className="mt-2 text-4xl font-extrabold text-blue-700">
+            <div className="text-[15px] font-semibold text-slate-500">Leite (mês)</div>
+            <div className="mt-2 text-3xl font-extrabold text-sky-700">
               {data.totalMilk.toFixed(1)}
             </div>
-            <div className="mt-1 text-sm text-gray-400">litros</div>
+            <div className="mt-1 text-sm text-slate-400">litros</div>
           </div>
 
-          <div className="rounded-3xl border border-green-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <div className="rounded-[28px] border border-emerald-200 bg-gradient-to-br from-white to-emerald-50 p-5 shadow-[0_10px_30px_rgba(16,185,129,0.12)]">
             <div className="mb-3 text-4xl">🛒</div>
-            <div className="text-sm font-semibold uppercase tracking-wide text-gray-500">
-              Entrou no mês
-            </div>
-            <div className="mt-2 text-4xl font-extrabold text-green-700">
+            <div className="text-[15px] font-semibold text-slate-500">Receita (mês)</div>
+            <div className="mt-2 text-3xl font-extrabold text-emerald-700">
               {formatMoney(data.totalRevenue)}
             </div>
-            <div className="mt-1 text-sm text-gray-400">receita total</div>
           </div>
 
-          <div className="rounded-3xl border border-red-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <div className="rounded-[28px] border border-rose-200 bg-gradient-to-br from-white to-rose-50 p-5 shadow-[0_10px_30px_rgba(244,63,94,0.12)]">
             <div className="mb-3 text-4xl">💸</div>
-            <div className="text-sm font-semibold uppercase tracking-wide text-gray-500">
-              Saiu no mês
-            </div>
-            <div className="mt-2 text-4xl font-extrabold text-red-700">
+            <div className="text-[15px] font-semibold text-slate-500">Despesas (mês)</div>
+            <div className="mt-2 text-3xl font-extrabold text-rose-700">
               {formatMoney(data.totalExpenses)}
             </div>
-            <div className="mt-1 text-sm text-gray-400">despesas totais</div>
           </div>
 
           <div
-            className={`rounded-3xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:col-span-2 xl:col-span-2 ${
-              resultado >= 0 ? 'border-green-300' : 'border-red-300'
+            className={`col-span-2 rounded-[30px] border p-5 shadow-[0_12px_35px_rgba(0,0,0,0.08)] ${
+              resultado >= 0
+                ? 'border-emerald-300 bg-gradient-to-br from-white to-emerald-50'
+                : 'border-rose-300 bg-gradient-to-br from-white to-rose-50'
             }`}
           >
             <div className="mb-3 text-4xl">📊</div>
-            <div className="text-sm font-semibold uppercase tracking-wide text-gray-500">
-              Saldo do mês
-            </div>
+            <div className="text-[15px] font-semibold text-slate-500">Resultado (mês)</div>
             <div
               className={`mt-2 text-4xl font-extrabold ${
-                resultado >= 0 ? 'text-green-700' : 'text-red-700'
+                resultado >= 0 ? 'text-emerald-700' : 'text-rose-700'
               }`}
             >
               {formatMoney(resultado)}
             </div>
-            <div className="mt-1 text-sm text-gray-400">
-              {resultado >= 0 ? 'sobrou dinheiro' : 'gastou mais do que entrou'}
+            <div className="mt-1 text-sm text-slate-400">
+              {resultado >= 0 ? 'lucro' : 'prejuízo'}
             </div>
           </div>
         </div>
