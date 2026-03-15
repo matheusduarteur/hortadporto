@@ -6,7 +6,7 @@ import type { ReactNode } from 'react'
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-[#f7f3ea]">
       {/* MENU LATERAL (DESKTOP) */}
       <Sidebar />
 
@@ -16,8 +16,8 @@ export function AppShell({ children }: { children: ReactNode }) {
         <MobileShell />
 
         {/* ÁREA DAS PÁGINAS */}
-        <main className="flex-1 p-4 md:p-8">
-          <div className="max-w-6xl mx-auto">{children}</div>
+        <main className="flex-1 px-4 pb-4 pt-2 md:px-8 md:py-6">
+          <div className="mx-auto max-w-6xl">{children}</div>
         </main>
       </div>
     </div>
@@ -51,15 +51,15 @@ function Sidebar() {
         text-[#fefae0]
         transition-[width]
         duration-300
-        w-[72px]
-        hover:w-56
+        w-[80px]
+        hover:w-64
         group
         shadow-[8px_0_24px_rgba(0,0,0,0.25)]
       "
     >
       {/* LOGO / TÍTULO */}
       <div className="flex items-center gap-3 px-4 py-4 border-b border-white/10">
-        <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-emerald-500/20 text-2xl">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-500/25 text-2xl">
           🥕
         </div>
         <div className="flex flex-col overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -90,8 +90,8 @@ function Sidebar() {
                 transition
                 ${
                   active
-                    ? 'bg-emerald-500 text-emerald-50 shadow-lg shadow-emerald-900/30'
-                    : 'text-[#d8f3dc]/80 hover:bg-white/10 hover:text-white'
+                    ? 'bg-emerald-400 text-emerald-950 shadow-lg shadow-emerald-900/30'
+                    : 'text-[#d8f3dc]/85 hover:bg-white/10 hover:text-white'
                 }
               `}
             >
@@ -105,7 +105,7 @@ function Sidebar() {
       </nav>
 
       {/* RODAPÉ DO MENU */}
-      <div className="px-3 py-3 border-t border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-[11px] text-[#d8f3dc]/70">
+      <div className="px-3 py-3 border-t border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-[11px] text-[#d8f3dc]/75">
         Feito na roça digital 🌱
       </div>
     </aside>
@@ -119,9 +119,11 @@ function Sidebar() {
 function MobileShell() {
   const pathname = usePathname()
 
+  // AQUI colocamos mais itens importantes no mobile também
   const items = [
     { href: '/', label: 'Resumo', icon: '🏡' },
     { href: '/galinhas', label: 'Galinhas', icon: '🐔' },
+    { href: '/vacas', label: 'Vacas', icon: '🐄' },
     { href: '/vendas', label: 'Vendas', icon: '🛒' },
     { href: '/relatorios', label: 'Relatórios', icon: '📊' },
   ]
