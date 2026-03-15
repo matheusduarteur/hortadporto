@@ -55,22 +55,28 @@ function Header() {
 }
 
 /* =========================
-   CARD DE CLIMA (MORRINHOS - BA)
+   CARD DE CLIMA (USANDO OPENWEATHER)
    ========================= */
 
 type WeatherData = {
   temp: number | null
+  feelsLike: number | null
   description: string | null
   humidity: number | null
   willRain: boolean | null
+  rainLastHour: number | null
+  iconCode: string | null
 }
 
 function WeatherCard() {
   const [weather, setWeather] = useState<WeatherData>({
     temp: null,
+    feelsLike: null,
     description: null,
     humidity: null,
     willRain: null,
+    rainLastHour: null,
+    iconCode: null,
   })
   const [loading, setLoading] = useState(true)
 
@@ -96,17 +102,29 @@ function WeatherCard() {
         const data = await res.json()
 
         const temp = data.main?.temp ?? null
+        const feelsLike = data.main?.feels_like ?? null
         const description = data.weather?.[0]?.description ?? null
         const humidity = data.main?.humidity ?? null
+        const iconCode = data.weather?.[0]?.icon ?? null
+
+        const rainLastHour =
+          data.rain && typeof data.rain['1h'] === 'number'
+            ? data.rain['1h']
+            : null
 
         const descText = (description || '').toLowerCase()
-        const willRain = descText.includes('chuva')
+        const willRain =
+          descText.includes('chuva') ||
+          (rainLastHour !== null && rainLastHour > 0)
 
         setWeather({
           temp,
+          feelsLike,
           description,
           humidity,
           willRain,
+          rainLastHour,
+          iconCode,
         })
       } catch (error) {
         console.error('Erro ao carregar clima:', error)
@@ -116,38 +134,67 @@ function WeatherCard() {
     }
 
     fetchWeather()
+
+    // Se depois você quiser auto-atualizar a cada 10 minutos, descomenta:
+    // const intervalId = setInterval(fetchWeather, 10 * 60 * 1000)
+    // return () => clearInterval(intervalId)
   }, [])
 
   const tempText =
     weather.temp !== null ? `${Math.round(weather.temp)}°C` : '—°C'
+
+  const feelsLikeText =
+    weather.feelsLike !== null ? `${Math.round(weather.feelsLike)}°` : null
+
   const humidityText =
     weather.humidity !== null ? `${weather.humidity}%` : '—%'
+
   const rainText =
     weather.willRain === null
       ? 'Sem previsão'
       : weather.willRain
-      ? 'Pode chover'
+      ? weather.rainLastHour
+        ? `Chuva ${weather.rainLastHour.toFixed(1)} mm`
+        : 'Pode chover'
       : 'Sem chuva'
 
+  const iconUrl = weather.iconCode
+    ? `https://openweathermap.org/img/wn/${weather.iconCode}@2x.png`
+    : null
+
   return (
-    <div className="flex items-center gap-2 rounded-2xl bg-emerald-100/90 px-3 py-2 shadow-sm">
-      {/* bolinha com ícone de clima */}
-      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-emerald-50 text-sm">
-        ☁️
+    <div className="flex items-center gap-3 rounded-2xl bg-emerald-100/90 px-3 py-2 shadow-sm min-w-[180px]">
+      {/* BOLINHA COM ÍCONE DE CLIMA OFICIAL */}
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-600/90">
+        {iconUrl ? (
+          <img
+            src={iconUrl}
+            alt={weather.description ?? 'Condição do tempo'}
+            className="h-9 w-9"
+          />
+        ) : (
+          <span className="text-lg text-emerald-50">☁️</span>
+        )}
       </div>
 
-      <div className="flex flex-col leading-tight">
-        {/* Temperatura */}
-        <span className="text-xs font-semibold text-emerald-900">
+      {/* TEXTOS DO CARD */}
+      <div className="flex flex-col leading-tight flex-1">
+        {/* Temperatura + sensação */}
+        <span className="text-sm font-semibold text-emerald-900">
           {loading ? 'Carregando...' : tempText}
+          {!loading && feelsLikeText && (
+            <span className="ml-1 text-[10px] font-normal text-emerald-800/80">
+              (sensação {feelsLikeText})
+            </span>
+          )}
         </span>
 
-        {/* Descrição (sem "Morrinhos") */}
+        {/* Descrição simples (sem nome de cidade) */}
         <span className="text-[10px] text-emerald-800">
           {loading ? 'Carregando' : weather.description || 'Sem dados'}
         </span>
 
-        {/* Umidade + se vai chover */}
+        {/* Umidade + chuva */}
         <span className="text-[9px] text-emerald-800/80">
           Umidade {humidityText} · {rainText}
         </span>
