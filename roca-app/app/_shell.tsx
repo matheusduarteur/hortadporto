@@ -55,7 +55,7 @@ function Header() {
 }
 
 /* =========================
-   CARD DE CLIMA (OpenWeather)
+   CARD DE CLIMA (OpenWeather por lat/lon)
    ========================= */
 
 type WeatherData = {
@@ -92,8 +92,9 @@ function WeatherCard() {
 
     async function fetchWeather() {
       try {
+        // >>> AQUI usamos sua latitude/longitude de Mirronhos / Morrinhos - Poções - BA
         const res = await fetch(
-          'https://api.openweathermap.org/data/2.5/weather?q=Morrinhos,BR&units=metric&lang=pt_br&appid=' +
+          'https://api.openweathermap.org/data/2.5/weather?lat=-14.620972971351303&lon=-40.29520315068608&units=metric&lang=pt_br&appid=' +
             apiKey
         )
 
@@ -141,8 +142,7 @@ function WeatherCard() {
     // 2) busca de novo a cada 10 minutos (enquanto estiver ativo)
     intervalId = window.setInterval(fetchWeather, 10 * 60 * 1000)
 
-    // 3) quando a aba voltar a ficar visível (depois de minimizar / trocar app),
-    //     busca de novo na hora
+    // 3) quando a aba voltar a ficar visível (depois de minimizar / trocar app), busca de novo na hora
     function handleVisibilityChange() {
       if (document.visibilityState === 'visible') {
         fetchWeather()
