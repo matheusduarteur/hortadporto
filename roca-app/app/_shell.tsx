@@ -27,17 +27,26 @@ export function AppShell({ children }: { children: ReactNode }) {
 
 function Header() {
   return (
-    <header className="w-full border-b border-emerald-900/10 bg-[#1b4332] text-[#fefae0]">
+    <header className="w-full border-b border-emerald-900/10 bg-[#f7f3ea]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-8">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">🌿</span>
-          <div>
-            <h1 className="text-sm font-semibold leading-tight">
+        <div className="flex items-center gap-3">
+          {/* LOGO REDONDINHA */}
+          <div className="h-10 w-10 rounded-full overflow-hidden border border-emerald-700/30 bg-[#fdf9ec] flex items-center justify-center">
+            {/* Se quiser pode usar <Image /> de next/image, mas vamos simples */}
+            <img
+              src="/horta-logo.png"
+              alt="Horta d’Porto"
+              className="h-8 w-8 object-contain"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold tracking-[0.08em] text-emerald-900 uppercase">
               Horta d’Porto
-            </h1>
-            <p className="text-[11px] text-[#d8f3dc]/80 leading-tight">
-              Gestão da roça
-            </p>
+            </span>
+            <span className="text-[11px] tracking-[0.18em] text-emerald-700 uppercase">
+              Gestão da Roça
+            </span>
           </div>
         </div>
       </div>
