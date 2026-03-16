@@ -56,11 +56,11 @@ export function AppShell({ children }: { children: ReactNode }) {
 function Header() {
   return (
     <header className="w-full border-b border-emerald-900/10 bg-[#fdf9ec]">
-      <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-3 md:flex-row md:items-center md:justify-between md:px-8">
-        {/* LOGO + NOME DO APP */}
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-8">
+        {/* LOGO + NOME DO APP À ESQUERDA */}
         <div className="flex items-center gap-3">
           {/* ÍCONE / LOGO REDONDO */}
-          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-emerald-700/40 bg-[#fdf9ec] shadow-sm">
+          <div className="h-10 w-10 rounded-full overflow-hidden border border-emerald-700/40 bg-[#fdf9ec] flex items-center justify-center shadow-sm">
             <img
               src="/horta-logo.png"
               alt="Roça App"
@@ -68,19 +68,16 @@ function Header() {
             />
           </div>
 
-          {/* NOME DO APP */}
+          {/* NOME DO APP (Roça App) COM FONTE MAIS MARCANTE */}
           <div className="flex flex-col">
             <span className="bg-gradient-to-r from-emerald-900 via-emerald-700 to-lime-700 bg-clip-text text-lg font-black uppercase italic tracking-[0.18em] text-transparent">
               Roça App
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-emerald-900/70">
-              Controle da roça em um só lugar
-            </span>
           </div>
         </div>
 
-        {/* CARD DE CLIMA – FICA ABAIXO EM MOBILE, AO LADO EM DESKTOP */}
-        <div className="md:ml-3 md:flex-shrink-0">
+        {/* CARD DE CLIMA À DIREITA */}
+        <div className="ml-3 flex-shrink-0">
           <WeatherCard />
         </div>
       </div>
@@ -216,8 +213,8 @@ function WeatherCard() {
     : null
 
   return (
-    <div className="flex min-w-[190px] items-center gap-3 rounded-2xl border border-emerald-200/70 bg-emerald-50/95 px-3 py-2 shadow-sm">
-      {/* ÍCONE DE CLIMA */}
+    <div className="flex items-center gap-3 rounded-2xl bg-emerald-100/90 px-3 py-2 shadow-sm min-w-[180px]">
+      {/* BOLINHA COM ÍCONE DE CLIMA OFICIAL */}
       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-600/90">
         {iconUrl ? (
           <img
@@ -231,9 +228,9 @@ function WeatherCard() {
       </div>
 
       {/* TEXTOS DO CARD */}
-      <div className="flex flex-1 flex-col leading-tight">
+      <div className="flex flex-col leading-tight flex-1">
         {/* Temperatura + sensação */}
-        <span className="text-sm font-semibold text-emerald-950">
+        <span className="text-sm font-semibold text-emerald-900">
           {loading ? 'Carregando...' : tempText}
           {!loading && feelsLikeText && (
             <span className="ml-1 text-[10px] font-normal text-emerald-800/80">
@@ -242,7 +239,7 @@ function WeatherCard() {
           )}
         </span>
 
-        {/* Descrição simples */}
+        {/* Descrição simples (sem nome de cidade) */}
         <span className="text-[10px] text-emerald-800">
           {loading ? 'Carregando' : weather.description || 'Sem dados'}
         </span>
