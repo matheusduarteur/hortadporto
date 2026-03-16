@@ -23,7 +23,7 @@ const atalhos: Atalho[] = [
   { label: 'Investimentos', icon: '💼' }, // ainda sem link
 ]
 
-// itens do menu suspenso (pode ter mais que 9)
+// itens do menu suspenso
 const menuItems: Atalho[] = [
   { href: '/galinhas', label: 'Galinhas', icon: '🐔' },
   { href: '/vacas', label: 'Vacas', icon: '🐄' },
@@ -47,7 +47,6 @@ type DashboardResumo = {
 type PeriodOption = 'today' | 'last7' | 'last30' | 'custom'
 
 function formatHeaderDate() {
-  // label tipo "segunda-feira, 16 de março de 2026"
   return new Date().toLocaleDateString('pt-BR', {
     weekday: 'long',
     day: '2-digit',
@@ -56,7 +55,6 @@ function formatHeaderDate() {
   })
 }
 
-// retorna { inicioStr, fimStr } em formato YYYY-MM-DD (fim exclusivo)
 function getRangeFromPeriod(
   period: PeriodOption,
   customStart?: string | null,
@@ -69,7 +67,7 @@ function getRangeFromPeriod(
     today.getFullYear(),
     today.getMonth(),
     today.getDate() + 1
-  ) // amanhã 00:00
+  )
 
   let start: Date
 
@@ -84,7 +82,6 @@ function getRangeFromPeriod(
       today.getDate() - 30
     )
   } else {
-    // custom
     if (customStart && customEnd) {
       const s = new Date(customStart)
       const e = new Date(customEnd)
@@ -99,7 +96,6 @@ function getRangeFromPeriod(
         )}-${pad(endCustom.getDate())}`,
       }
     } else {
-      // fallback: últimos 30 dias
       start = new Date(
         today.getFullYear(),
         today.getMonth(),
@@ -139,15 +135,12 @@ function formatPeriodLabel(
 }
 
 export default function DashboardPage() {
-  // data exibida no topo (Painel da Horta)
   const [labelMes, setLabelMes] = useState<string>(formatHeaderDate)
 
-  // estado do período dos relatórios
   const [period, setPeriod] = useState<PeriodOption>('last30')
   const [customStart, setCustomStart] = useState<string | null>(null)
   const [customEnd, setCustomEnd] = useState<string | null>(null)
 
-  // range efetivo usado nas consultas
   const [{ inicioStr, fimStr }, setRange] = useState(() =>
     getRangeFromPeriod('last30')
   )
@@ -155,7 +148,6 @@ export default function DashboardPage() {
   const [resumo, setResumo] = useState<DashboardResumo | null>(null)
   const [loadingResumo, setLoadingResumo] = useState(true)
 
-  // dropdown e popup de período
   const [showPeriodOptions, setShowPeriodOptions] = useState(false)
   const [showCustomModal, setShowCustomModal] = useState(false)
   const [tempCustomStart, setTempCustomStart] = useState('')
@@ -164,7 +156,6 @@ export default function DashboardPage() {
   // menu suspenso (flutuante com seta)
   const [menuAberto, setMenuAberto] = useState(false)
 
-  // Atualiza header date quando volta a ficar visível
   useEffect(() => {
     function updateLabelDate() {
       setLabelMes(formatHeaderDate())
@@ -183,18 +174,15 @@ export default function DashboardPage() {
     }
   }, [])
 
-  // Atualiza range quando período muda
   useEffect(() => {
     const range = getRangeFromPeriod(period, customStart, customEnd)
     setRange(range)
   }, [period, customStart, customEnd])
 
-  // Carrega resumo quando o range muda
   useEffect(() => {
     async function carregarResumo() {
       setLoadingResumo(true)
       try {
-        // 1) vendas -> sales.total
         const { data: vendas, error: errVendas } = await supabase
           .from('sales')
           .select('total, date')
@@ -211,7 +199,6 @@ export default function DashboardPage() {
             0
           ) || 0
 
-        // 2) despesas -> expenses.amount
         const { data: despesas, error: errDespesas } = await supabase
           .from('expenses')
           .select('amount, date')
@@ -228,7 +215,6 @@ export default function DashboardPage() {
             0
           ) || 0
 
-        // 3) ovos -> egg_records.quantity
         const { data: ovosData, error: errOvos } = await supabase
           .from('egg_records')
           .select('quantity, date')
@@ -289,7 +275,6 @@ export default function DashboardPage() {
       ? 'Carregando...'
       : '0 ovos'
 
-  // por enquanto, números do plantel fixos (vamos ligar no banco depois)
   const galinhasCount = 0
   const vacasCount = 0
   const tilapiasCount = 0
@@ -299,7 +284,6 @@ export default function DashboardPage() {
   function handleChoosePeriod(option: PeriodOption) {
     setShowPeriodOptions(false)
     if (option === 'custom') {
-      // abre modal com datas atuais ou vazias
       setTempCustomStart(customStart ?? '')
       setTempCustomEnd(customEnd ?? '')
       setShowCustomModal(true)
@@ -325,31 +309,31 @@ export default function DashboardPage() {
         <button
           type="button"
           onClick={() => setMenuAberto((prev) => !prev)}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-700 text-emerald-50 shadow-lg border border-emerald-900/40 active:scale-95"
+          className="flex h-11 w-11 items-center justify-center rounded-full bg-emerald-700 text-emerald-50 shadow-xl border border-emerald-900/40 active:scale-95"
         >
-          <span className="text-lg leading-none">▾</span>
+          <span className="text-xl leading-none">▾</span>
         </button>
 
-        {/* MENU SUSPENSO LATERAL */}
+        {/* MENU SUSPENSO LATERAL (MAIOR) */}
         {menuAberto && (
-          <div className="mt-2 w-48 rounded-2xl border border-emerald-900/30 bg-emerald-950/95 py-1 shadow-xl">
+          <div className="mt-3 w-64 max-h-[70vh] overflow-y-auto rounded-3xl border border-emerald-900/40 bg-emerald-950/98 py-2 shadow-[0_18px_40px_rgba(0,0,0,0.45)]">
             {menuItems.map((item) =>
               item.href ? (
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-50 hover:bg-emerald-800/70 active:bg-emerald-700/70"
+                  className="flex items-center gap-2 px-4 py-2.5 text-[13px] font-semibold text-emerald-50 hover:bg-emerald-800/70 active:bg-emerald-700/80"
                   onClick={() => setMenuAberto(false)}
                 >
-                  <span className="text-base">{item.icon}</span>
+                  <span className="text-lg">{item.icon}</span>
                   <span>{item.label}</span>
                 </Link>
               ) : (
                 <div
                   key={item.label}
-                  className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-200/70 italic"
+                  className="flex items-center gap-2 px-4 py-2.5 text-[13px] font-semibold text-emerald-200/70 italic"
                 >
-                  <span className="text-base">{item.icon}</span>
+                  <span className="text-lg">{item.icon}</span>
                   <span>{item.label}</span>
                 </div>
               )
@@ -410,10 +394,8 @@ export default function DashboardPage() {
               href="/relatorios"
               className="block rounded-3xl bg-emerald-900 px-5 py-5 shadow-xl transition-all active:scale-[0.98] hover:bg-emerald-800"
             >
-              {/* Cabeçalho do card (ícone + título + período) */}
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  {/* Bolinha com ícone de gráfico */}
                   <div className="flex h-11 w-11 items-center justify-center rounded-full bg-emerald-700/60 text-xl">
                     📊
                   </div>
@@ -422,7 +404,6 @@ export default function DashboardPage() {
                       Relatórios
                     </span>
 
-                    {/* PERÍODO SELETOR */}
                     <button
                       type="button"
                       onClick={(e) => {
@@ -438,14 +419,12 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                {/* Setinha à direita (continua apontando que é link para /relatorios) */}
                 <div className="hidden sm:flex h-8 w-8 items-center justify-center rounded-full bg-emerald-700/50 text-emerald-300">
                   <span className="text-lg">›</span>
                 </div>
                 <span className="text-xl text-emerald-400 sm:hidden">›</span>
               </div>
 
-              {/* Grid de métricas */}
               <div className="mt-4 grid grid-cols-2 gap-3">
                 <div className="rounded-2xl bg-emerald-800/60 px-4 py-3">
                   <span className="text-[10px] font-semibold uppercase tracking-widest text-emerald-400">
@@ -496,7 +475,6 @@ export default function DashboardPage() {
               </p>
             </Link>
 
-            {/* DROPDOWN DE PERÍODO */}
             {showPeriodOptions && (
               <div className="absolute left-5 right-5 top-[4.1rem] z-20 rounded-2xl border border-emerald-700/40 bg-emerald-950/95 py-2 shadow-xl">
                 <button
@@ -532,7 +510,6 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* MODAL DE DATA PERSONALIZADA */}
         {showCustomModal && (
           <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40 px-4">
             <div className="w-full max-w-sm rounded-2xl bg-white p-4 shadow-2xl">
@@ -588,7 +565,6 @@ export default function DashboardPage() {
         {/* CARD DE PLANTEL DE ANIMAIS */}
         <section className="mt-4">
           <div className="block rounded-3xl bg-emerald-800 px-5 py-5 shadow-xl">
-            {/* Cabeçalho do card */}
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-700/80 text-lg">
                 🐾
@@ -603,7 +579,6 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Grid com os tipos de animais */}
             <div className="mt-4 grid grid-cols-3 gap-3">
               <div className="rounded-2xl bg-emerald-900/70 px-3 py-3 text-center">
                 <div className="mb-1 text-2xl">🐔</div>
