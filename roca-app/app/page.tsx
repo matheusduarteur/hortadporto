@@ -5,11 +5,12 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabaseClient'
 
 type Atalho = {
-  href: string
+  href?: string
   label: string
   icon: string
 }
 
+// atalhos da grade (9 ícones)
 const atalhos: Atalho[] = [
   { href: '/galinhas', label: 'Galinhas', icon: '🐔' },
   { href: '/vacas', label: 'Vacas', icon: '🐄' },
@@ -17,6 +18,23 @@ const atalhos: Atalho[] = [
   { href: '/horta', label: 'Horta', icon: '🥬' },
   { href: '/vendas', label: 'Vendas', icon: '🛒' },
   { href: '/despesas', label: 'Despesas', icon: '💸' },
+  { href: '/dia-de-feira', label: 'Dia de Feira', icon: '🛍️' },
+  { label: 'Identificador', icon: '📷' }, // ainda sem link
+  { label: 'Investimentos', icon: '💼' }, // ainda sem link
+]
+
+// itens do menu suspenso (pode ter mais que 9)
+const menuItems: Atalho[] = [
+  { href: '/galinhas', label: 'Galinhas', icon: '🐔' },
+  { href: '/vacas', label: 'Vacas', icon: '🐄' },
+  { href: '/tilapia', label: 'Tilápia', icon: '🐟' },
+  { href: '/horta', label: 'Horta', icon: '🥬' },
+  { href: '/vendas', label: 'Vendas', icon: '🛒' },
+  { href: '/despesas', label: 'Despesas', icon: '💸' },
+  { href: '/relatorios', label: 'Relatórios', icon: '📊' },
+  { href: '/dia-de-feira', label: 'Dia de Feira', icon: '🛍️' },
+  { label: 'Identificador', icon: '📷' },
+  { label: 'Investimentos', icon: '💼' },
 ]
 
 type DashboardResumo = {
@@ -142,6 +160,9 @@ export default function DashboardPage() {
   const [showCustomModal, setShowCustomModal] = useState(false)
   const [tempCustomStart, setTempCustomStart] = useState('')
   const [tempCustomEnd, setTempCustomEnd] = useState('')
+
+  // menu suspenso do topo
+  const [menuAberto, setMenuAberto] = useState(false)
 
   // Atualiza header date quando volta a ficar visível
   useEffect(() => {
@@ -298,9 +319,57 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="bg-[#f4f1eb]">
+    <div className="bg-[#f4f1eb] min-h-screen">
+      {/* TOPO / LOGO / MENU SUSPENSO */}
+      <header className="flex items-center justify-between bg-[#f4f1eb] px-4 pt-4 pb-2">
+        <div className="flex items-center gap-2">
+          {/* se tiver logo, coloca aqui */}
+          {/* <img src="/horta-logo.png" ... /> */}
+          <span className="text-sm font-extrabold uppercase tracking-[0.25em] text-emerald-900">
+            Roça App
+          </span>
+        </div>
+
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setMenuAberto((prev) => !prev)}
+            className="flex items-center gap-1 rounded-full bg-emerald-900 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-50 shadow-md active:scale-95"
+          >
+            Menu
+            <span className="text-[10px]">▾</span>
+          </button>
+
+          {menuAberto && (
+            <div className="absolute right-0 mt-2 w-48 rounded-2xl border border-emerald-900/30 bg-emerald-950/95 py-1 shadow-xl z-30">
+              {menuItems.map((item) =>
+                item.href ? (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-50 hover:bg-emerald-800/70 active:bg-emerald-700/70"
+                    onClick={() => setMenuAberto(false)}
+                  >
+                    <span className="text-base">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </Link>
+                ) : (
+                  <div
+                    key={item.label}
+                    className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-200/70 italic"
+                  >
+                    <span className="text-base">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </div>
+                )
+              )}
+            </div>
+          )}
+        </div>
+      </header>
+
       {/* CABEÇALHO */}
-      <section className="bg-gradient-to-br from-emerald-900 to-emerald-700 px-6 pb-10 pt-10">
+      <section className="bg-gradient-to-br from-emerald-900 to-emerald-700 px-6 pb-10 pt-6">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-300">
           Painel da Horta
         </p>
@@ -312,21 +381,35 @@ export default function DashboardPage() {
       <div className="mx-auto max-w-lg px-4 pb-4">
         {/* ATALHOS */}
         <section className="-mt-5">
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-            {atalhos.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex flex-col items-center gap-2 rounded-2xl bg-white px-2 py-4 shadow-md transition-all active:scale-95 hover:shadow-lg"
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-2xl">
-                  {item.icon}
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-3">
+            {atalhos.map((item) =>
+              item.href ? (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="flex flex-col items-center gap-2 rounded-2xl bg-white px-2 py-3 shadow-md transition-all active:scale-95 hover:shadow-lg"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-xl">
+                    {item.icon}
+                  </div>
+                  <span className="text-[10px] font-semibold text-emerald-900 text-center leading-tight">
+                    {item.label}
+                  </span>
+                </Link>
+              ) : (
+                <div
+                  key={item.label}
+                  className="flex flex-col items-center gap-2 rounded-2xl bg-white px-2 py-3 shadow-md opacity-90"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-xl">
+                    {item.icon}
+                  </div>
+                  <span className="text-[10px] font-semibold text-emerald-900 text-center leading-tight">
+                    {item.label}
+                  </span>
                 </div>
-                <span className="text-[11px] font-semibold text-emerald-900 text-center leading-tight">
-                  {item.label}
-                </span>
-              </Link>
-            ))}
+              )
+            )}
           </div>
         </section>
 
@@ -469,7 +552,7 @@ export default function DashboardPage() {
 
               <div className="mt-3 grid grid-cols-1 gap-3">
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500 mb-1.5">
+                  <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
                     Início
                   </label>
                   <input
@@ -480,7 +563,7 @@ export default function DashboardPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500 mb-1.5">
+                  <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
                     Fim
                   </label>
                   <input
