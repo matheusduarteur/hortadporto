@@ -161,7 +161,7 @@ export default function DashboardPage() {
   const [tempCustomStart, setTempCustomStart] = useState('')
   const [tempCustomEnd, setTempCustomEnd] = useState('')
 
-  // menu suspenso (flutuante com hambúrguer)
+  // menu suspenso (flutuante com seta)
   const [menuAberto, setMenuAberto] = useState(false)
 
   // Atualiza header date quando volta a ficar visível
@@ -320,17 +320,14 @@ export default function DashboardPage() {
 
   return (
     <div className="bg-[#f4f1eb] min-h-screen relative">
-      {/* BOTÃO FLUTUANTE DE MENU (HAMBÚRGUER VERDE) */}
+      {/* BOTÃO FLUTUANTE DE MENU (BOLINHA VERDE COM SETA) */}
       <div className="fixed left-4 top-20 z-40">
         <button
           type="button"
           onClick={() => setMenuAberto((prev) => !prev)}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-700 text-emerald-50 shadow-lg active:scale-95"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-700 text-emerald-50 shadow-lg border border-emerald-900/40 active:scale-95"
         >
-          {/* ícone de hambúrguer simples */}
-          <span className="block h-[2px] w-5 rounded-full bg-emerald-50 mb-[3px]" />
-          <span className="block h-[2px] w-5 rounded-full bg-emerald-50 mb-[3px]" />
-          <span className="block h-[2px] w-5 rounded-full bg-emerald-50" />
+          <span className="text-lg leading-none">▾</span>
         </button>
 
         {/* MENU SUSPENSO LATERAL */}
