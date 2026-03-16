@@ -193,7 +193,7 @@ export default function DashboardPage() {
         <section className="mt-6">
           <Link
             href="/relatorios"
-            className="block rounded-t-3xl bg-emerald-900 px-5 py-5 shadow-xl transition-all active:scale-[0.98] hover:bg-emerald-800"
+            className="block rounded-3xl bg-emerald-900 px-5 py-5 shadow-xl transition-all active:scale-[0.98] hover:bg-emerald-800"
           >
             {/* Cabeçalho do card (ícone + título + mês) */}
             <div className="flex items-center justify-between gap-3">
@@ -273,17 +273,17 @@ export default function DashboardPage() {
 
         {/* CARD DE PLANTEL DE ANIMAIS */}
         <section className="mt-4">
-          <div className="block rounded-b-3xl bg-emerald-950 px-5 py-5 shadow-xl">
+          <div className="block rounded-3xl bg-emerald-800 px-5 py-5 shadow-xl">
             {/* Cabeçalho do card */}
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-800/70 text-lg">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-700/80 text-lg">
                 🐾
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-400/90">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-200">
                   Plantel de animais
                 </span>
-                <span className="text-xs text-emerald-200/80">
+                <span className="text-xs text-emerald-100/90">
                   Visão rápida do total de animais na propriedade
                 </span>
               </div>
@@ -291,38 +291,38 @@ export default function DashboardPage() {
 
             {/* Grid com os tipos de animais */}
             <div className="mt-4 grid grid-cols-3 gap-3">
-              <div className="rounded-2xl bg-emerald-900/80 px-3 py-3 text-center">
-                <div className="text-2xl mb-1">🐔</div>
-                <span className="block text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
+              <div className="rounded-2xl bg-emerald-900/70 px-3 py-3 text-center">
+                <div className="mb-1 text-2xl">🐔</div>
+                <span className="block text-[10px] font-semibold uppercase tracking-wide text-emerald-200">
                   Galinhas
                 </span>
-                <p className="mt-1 text-xl font-bold leading-tight text-emerald-100">
+                <p className="mt-1 text-xl font-bold leading-tight text-emerald-50">
                   {galinhasCount}
                 </p>
               </div>
 
-              <div className="rounded-2xl bg-emerald-900/80 px-3 py-3 text-center">
-                <div className="text-2xl mb-1">🐄</div>
-                <span className="block text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
+              <div className="rounded-2xl bg-emerald-900/70 px-3 py-3 text-center">
+                <div className="mb-1 text-2xl">🐄</div>
+                <span className="block text-[10px] font-semibold uppercase tracking-wide text-emerald-200">
                   Vacas
                 </span>
-                <p className="mt-1 text-xl font-bold leading-tight text-emerald-100">
+                <p className="mt-1 text-xl font-bold leading-tight text-emerald-50">
                   {vacasCount}
                 </p>
               </div>
 
-              <div className="rounded-2xl bg-emerald-900/80 px-3 py-3 text-center">
-                <div className="text-2xl mb-1">🐟</div>
-                <span className="block text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
+              <div className="rounded-2xl bg-emerald-900/70 px-3 py-3 text-center">
+                <div className="mb-1 text-2xl">🐟</div>
+                <span className="block text-[10px] font-semibold uppercase tracking-wide text-emerald-200">
                   Tilápias
                 </span>
-                <p className="mt-1 text-xl font-bold leading-tight text-emerald-100">
+                <p className="mt-1 text-xl font-bold leading-tight text-emerald-50">
                   {tilapiasCount}
                 </p>
               </div>
             </div>
 
-            <p className="mt-4 text-[10px] text-emerald-300/70">
+            <p className="mt-4 text-[10px] text-emerald-100/80">
               Em breve, estes números serão atualizados automaticamente a partir
               dos registros de galinhas, vacas e tanques de tilápia.
             </p>
