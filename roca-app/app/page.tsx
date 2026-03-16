@@ -161,7 +161,7 @@ export default function DashboardPage() {
   const [tempCustomStart, setTempCustomStart] = useState('')
   const [tempCustomEnd, setTempCustomEnd] = useState('')
 
-  // menu suspenso do topo
+  // menu suspenso (flutuante com hambúrguer)
   const [menuAberto, setMenuAberto] = useState(false)
 
   // Atualiza header date quando volta a ficar visível
@@ -319,57 +319,50 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="bg-[#f4f1eb] min-h-screen">
-      {/* TOPO / LOGO / MENU SUSPENSO */}
-      <header className="flex items-center justify-between bg-[#f4f1eb] px-4 pt-4 pb-2">
-        <div className="flex items-center gap-2">
-          {/* se tiver logo, coloca aqui */}
-          {/* <img src="/horta-logo.png" ... /> */}
-          <span className="text-sm font-extrabold uppercase tracking-[0.25em] text-emerald-900">
-            Roça App
-          </span>
-        </div>
+    <div className="bg-[#f4f1eb] min-h-screen relative">
+      {/* BOTÃO FLUTUANTE DE MENU (HAMBÚRGUER VERDE) */}
+      <div className="fixed left-4 top-20 z-40">
+        <button
+          type="button"
+          onClick={() => setMenuAberto((prev) => !prev)}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-700 text-emerald-50 shadow-lg active:scale-95"
+        >
+          {/* ícone de hambúrguer simples */}
+          <span className="block h-[2px] w-5 rounded-full bg-emerald-50 mb-[3px]" />
+          <span className="block h-[2px] w-5 rounded-full bg-emerald-50 mb-[3px]" />
+          <span className="block h-[2px] w-5 rounded-full bg-emerald-50" />
+        </button>
 
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => setMenuAberto((prev) => !prev)}
-            className="flex items-center gap-1 rounded-full bg-emerald-900 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-50 shadow-md active:scale-95"
-          >
-            Menu
-            <span className="text-[10px]">▾</span>
-          </button>
-
-          {menuAberto && (
-            <div className="absolute right-0 mt-2 w-48 rounded-2xl border border-emerald-900/30 bg-emerald-950/95 py-1 shadow-xl z-30">
-              {menuItems.map((item) =>
-                item.href ? (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-50 hover:bg-emerald-800/70 active:bg-emerald-700/70"
-                    onClick={() => setMenuAberto(false)}
-                  >
-                    <span className="text-base">{item.icon}</span>
-                    <span>{item.label}</span>
-                  </Link>
-                ) : (
-                  <div
-                    key={item.label}
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-200/70 italic"
-                  >
-                    <span className="text-base">{item.icon}</span>
-                    <span>{item.label}</span>
-                  </div>
-                )
-              )}
-            </div>
-          )}
-        </div>
-      </header>
+        {/* MENU SUSPENSO LATERAL */}
+        {menuAberto && (
+          <div className="mt-2 w-48 rounded-2xl border border-emerald-900/30 bg-emerald-950/95 py-1 shadow-xl">
+            {menuItems.map((item) =>
+              item.href ? (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-50 hover:bg-emerald-800/70 active:bg-emerald-700/70"
+                  onClick={() => setMenuAberto(false)}
+                >
+                  <span className="text-base">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              ) : (
+                <div
+                  key={item.label}
+                  className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-emerald-200/70 italic"
+                >
+                  <span className="text-base">{item.icon}</span>
+                  <span>{item.label}</span>
+                </div>
+              )
+            )}
+          </div>
+        )}
+      </div>
 
       {/* CABEÇALHO */}
-      <section className="bg-gradient-to-br from-emerald-900 to-emerald-700 px-6 pb-10 pt-6">
+      <section className="bg-gradient-to-br from-emerald-900 to-emerald-700 px-6 pb-10 pt-10">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-300">
           Painel da Horta
         </p>
