@@ -65,53 +65,53 @@ export default function VacasPage() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-green-900 mb-6">🐄 Vacas / Leite</h1>
+    <div className="flex flex-col gap-6">
+      <h1 className="text-xl font-extrabold tracking-tight text-slate-900">🐄 Vacas / Leite</h1>
 
-      <div className="bg-white rounded-xl shadow-sm border border-green-100 p-5 mb-6">
-        <h2 className="text-lg font-semibold text-green-800 mb-4">Novo Registro</h2>
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="card-section">
+        <h2 className="text-xs font-semibold tracking-[0.22em] text-emerald-700 uppercase mb-4">Novo Registro</h2>
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Data *</label>
+            <label className="block text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase mb-1.5">Data *</label>
             <input type="date" required className="input-field" value={form.date}
               onChange={(e) => setForm({ ...form, date: e.target.value })} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Litros de Leite *</label>
+            <label className="block text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase mb-1.5">Litros de Leite *</label>
             <input type="number" required step="0.1" min="0" className="input-field" value={form.liters}
               onChange={(e) => setForm({ ...form, liters: e.target.value })} placeholder="0.0" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nome do Animal</label>
+            <label className="block text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase mb-1.5">Nome do Animal</label>
             <input type="text" className="input-field" value={form.animal_name}
               onChange={(e) => setForm({ ...form, animal_name: e.target.value })} placeholder="Ex: Mimosa" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Ração (kg)</label>
+            <label className="block text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase mb-1.5">Ração (kg)</label>
             <input type="number" step="0.1" min="0" className="input-field" value={form.feed_kg}
               onChange={(e) => setForm({ ...form, feed_kg: e.target.value })} placeholder="0.0" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Custo Ração (R$)</label>
+            <label className="block text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase mb-1.5">Custo Ração (R$)</label>
             <input type="number" step="0.01" min="0" className="input-field" value={form.feed_cost}
               onChange={(e) => setForm({ ...form, feed_cost: e.target.value })} placeholder="0.00" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Custo Extra (R$)</label>
+            <label className="block text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase mb-1.5">Custo Extra (R$)</label>
             <input type="number" step="0.01" min="0" className="input-field" value={form.extra_cost}
               onChange={(e) => setForm({ ...form, extra_cost: e.target.value })} placeholder="0.00" />
           </div>
-          <div className="col-span-2 md:col-span-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Observações</label>
+          <div className="col-span-1 sm:col-span-2 md:col-span-3">
+            <label className="block text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase mb-1.5">Observações</label>
             <input type="text" className="input-field" value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })} placeholder="..." />
           </div>
-          <div className="col-span-2 md:col-span-3 flex items-center gap-4">
+          <div className="col-span-1 sm:col-span-2 md:col-span-3 flex items-center gap-4 pt-1">
             <button type="submit" disabled={loading} className="btn-primary">
               {loading ? 'Salvando...' : 'Salvar'}
             </button>
             {message && (
-              <span className={`text-sm font-medium ${message.ok ? 'text-green-700' : 'text-red-600'}`}>
+              <span className={`text-sm font-medium ${message.ok ? 'text-emerald-700' : 'text-red-600'}`}>
                 {message.text}
               </span>
             )}
@@ -119,39 +119,39 @@ export default function VacasPage() {
         </form>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-green-100 overflow-hidden">
-        <div className="p-4 border-b border-gray-100">
-          <h2 className="text-lg font-semibold text-green-800">Registros Recentes</h2>
+      <div className="card-section overflow-hidden p-0">
+        <div className="px-4 py-3 border-b border-slate-100">
+          <h2 className="text-xs font-semibold tracking-[0.22em] text-emerald-700 uppercase">Registros Recentes</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-green-50 text-green-800">
-              <tr>
-                <th className="px-4 py-3 text-left font-medium">Data</th>
-                <th className="px-4 py-3 text-left font-medium">Animal</th>
-                <th className="px-4 py-3 text-right font-medium">Litros</th>
-                <th className="px-4 py-3 text-right font-medium">Ração (kg)</th>
-                <th className="px-4 py-3 text-right font-medium">Custo Total</th>
-                <th className="px-4 py-3 text-left font-medium">Obs.</th>
+            <thead>
+              <tr className="bg-emerald-50/70">
+                <th className="px-4 py-3 text-left text-xs font-semibold tracking-[0.14em] text-emerald-700 uppercase">Data</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold tracking-[0.14em] text-emerald-700 uppercase">Animal</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold tracking-[0.14em] text-emerald-700 uppercase">Litros</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold tracking-[0.14em] text-emerald-700 uppercase">Ração (kg)</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold tracking-[0.14em] text-emerald-700 uppercase">Custo Total</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold tracking-[0.14em] text-emerald-700 uppercase">Obs.</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-slate-100">
               {records.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-gray-400">Nenhum registro encontrado.</td>
+                  <td colSpan={7} className="px-4 py-10 text-center text-sm text-slate-400">Nenhum registro encontrado.</td>
                 </tr>
               ) : (
                 records.map((r) => {
                   const custoTotal = (Number(r.feed_cost || 0) + Number(r.extra_cost || 0))
                   return (
-                    <tr key={r.id} className="hover:bg-amber-50/50">
-                      <td className="px-4 py-3">{r.date}</td>
-                      <td className="px-4 py-3">{r.animal_name || '—'}</td>
-                      <td className="px-4 py-3 text-right font-medium">{Number(r.liters).toFixed(1)} L</td>
-                      <td className="px-4 py-3 text-right">{r.feed_kg ?? '—'}</td>
-                      <td className="px-4 py-3 text-right">{custoTotal > 0 ? `R$ ${custoTotal.toFixed(2)}` : '—'}</td>
-                      <td className="px-4 py-3 text-gray-500">{r.notes || '—'}</td>
+                    <tr key={r.id} className="hover:bg-emerald-50/40 transition-colors">
+                      <td className="px-4 py-3 text-slate-700">{r.date}</td>
+                      <td className="px-4 py-3 text-slate-700">{r.animal_name || '—'}</td>
+                      <td className="px-4 py-3 text-right font-semibold text-emerald-800">{Number(r.liters).toFixed(1)} L</td>
+                      <td className="px-4 py-3 text-right text-slate-600">{r.feed_kg ?? '—'}</td>
+                      <td className="px-4 py-3 text-right text-slate-600">{custoTotal > 0 ? `R$ ${custoTotal.toFixed(2)}` : '—'}</td>
+                      <td className="px-4 py-3 text-xs text-slate-400">{r.notes || '—'}</td>
                       <td className="px-4 py-3">
                         <button onClick={() => handleDelete(r.id)} className="btn-delete">Excluir</button>
                       </td>

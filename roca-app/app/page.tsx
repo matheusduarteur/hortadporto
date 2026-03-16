@@ -158,9 +158,7 @@ export default function DashboardPage() {
         <h1 className="text-xs font-semibold tracking-[0.28em] text-emerald-900 uppercase">
           Painel da Horta
         </h1>
-        <p className="mt-2 text-[11px] text-emerald-800/85">
-          Clique nos ícones para acessar:
-        </p>
+       
       </section>
 
       {/* GRADE DE ÍCONES REDONDINHOS */}
