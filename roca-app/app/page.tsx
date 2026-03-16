@@ -151,6 +151,11 @@ export default function DashboardPage() {
       ? 'Carregando...'
       : '0 ovos'
 
+  // por enquanto, números do plantel fixos (vamos ligar no banco depois)
+  const galinhasCount = 0
+  const vacasCount = 0
+  const tilapiasCount = 0
+
   return (
     <div className="bg-[#f4f1eb]">
       {/* CABEÇALHO */}
@@ -163,7 +168,7 @@ export default function DashboardPage() {
         </p>
       </section>
 
-      <div className="mx-auto max-w-lg px-4 pb-2">
+      <div className="mx-auto max-w-lg px-4 pb-4">
         {/* ATALHOS */}
         <section className="-mt-5">
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
@@ -184,7 +189,7 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* CARD DE RELATÓRIOS */}
+        {/* CARD DE RELATÓRIOS FINANCEIROS / OVOS */}
         <section className="mt-6">
           <Link
             href="/relatorios"
@@ -264,6 +269,64 @@ export default function DashboardPage() {
               atividades.
             </p>
           </Link>
+        </section>
+
+        {/* CARD DE PLANTEL DE ANIMAIS */}
+        <section className="mt-4">
+          <div className="block rounded-b-3xl bg-emerald-950 px-5 py-5 shadow-xl">
+            {/* Cabeçalho do card */}
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-800/70 text-lg">
+                🐾
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-400/90">
+                  Plantel de animais
+                </span>
+                <span className="text-xs text-emerald-200/80">
+                  Visão rápida do total de animais na propriedade
+                </span>
+              </div>
+            </div>
+
+            {/* Grid com os tipos de animais */}
+            <div className="mt-4 grid grid-cols-3 gap-3">
+              <div className="rounded-2xl bg-emerald-900/80 px-3 py-3 text-center">
+                <div className="text-2xl mb-1">🐔</div>
+                <span className="block text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
+                  Galinhas
+                </span>
+                <p className="mt-1 text-xl font-bold leading-tight text-emerald-100">
+                  {galinhasCount}
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-emerald-900/80 px-3 py-3 text-center">
+                <div className="text-2xl mb-1">🐄</div>
+                <span className="block text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
+                  Vacas
+                </span>
+                <p className="mt-1 text-xl font-bold leading-tight text-emerald-100">
+                  {vacasCount}
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-emerald-900/80 px-3 py-3 text-center">
+                <div className="text-2xl mb-1">🐟</div>
+                <span className="block text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
+                  Tilápias
+                </span>
+                <p className="mt-1 text-xl font-bold leading-tight text-emerald-100">
+                  {tilapiasCount}
+                </p>
+              </div>
+            </div>
+
+            <p className="mt-4 text-[10px] text-emerald-300/70">
+              Em breve, estes números serão atualizados automaticamente a partir
+              dos registros de galinhas, vacas e tanques de tilápia.
+            </p>
+          </div>
         </section>
       </div>
     </div>
