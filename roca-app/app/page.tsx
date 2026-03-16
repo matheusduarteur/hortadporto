@@ -163,7 +163,7 @@ export default function DashboardPage() {
         </p>
       </section>
 
-      <div className="mx-auto max-w-lg px-4 pb-10">
+      <div className="mx-auto max-w-lg px-4 pb-4">
         {/* ATALHOS */}
         <section className="-mt-5">
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
@@ -207,7 +207,7 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* Setinha discreta à direita (mais desktop) */}
+              {/* Setinha discreta à direita */}
               <div className="hidden sm:flex h-8 w-8 items-center justify-center rounded-full bg-emerald-700/50 text-emerald-300">
                 <span className="text-lg">›</span>
               </div>
