@@ -152,7 +152,7 @@ export default function DashboardPage() {
       : '0 ovos'
 
   return (
-    <div className="min-h-screen bg-[#f4f1eb]">
+    <div className="bg-[#f4f1eb]">
       {/* CABEÇALHO */}
       <section className="bg-gradient-to-br from-emerald-900 to-emerald-700 px-6 pb-10 pt-10">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-300">
@@ -163,7 +163,7 @@ export default function DashboardPage() {
         </p>
       </section>
 
-      <div className="mx-auto max-w-lg px-4 pb-4">
+      <div className="mx-auto max-w-lg px-4 pb-2">
         {/* ATALHOS */}
         <section className="-mt-5">
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
@@ -188,7 +188,7 @@ export default function DashboardPage() {
         <section className="mt-6">
           <Link
             href="/relatorios"
-            className="block rounded-3xl bg-emerald-900 px-5 py-5 shadow-xl transition-all active:scale-[0.98] hover:bg-emerald-800"
+            className="block rounded-t-3xl bg-emerald-900 px-5 py-5 shadow-xl transition-all active:scale-[0.98] hover:bg-emerald-800"
           >
             {/* Cabeçalho do card (ícone + título + mês) */}
             <div className="flex items-center justify-between gap-3">
