@@ -152,100 +152,120 @@ export default function DashboardPage() {
       : '0 ovos'
 
   return (
-    <div className="flex flex-col gap-8">
-      {/* BLOCO DO TÍTULO / INTRODUÇÃO (PAINEL DA HORTA) */}
-      <section className="text-center">
-        <h1 className="text-xs font-semibold tracking-[0.28em] text-emerald-900 uppercase">
+    <div className="min-h-screen bg-[#f4f1eb]">
+      {/* CABEÇALHO */}
+      <section className="bg-gradient-to-br from-emerald-900 to-emerald-700 px-6 pb-10 pt-10">
+        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-300">
           Painel da Horta
-        </h1>
-       
+        </p>
+        <p className="mt-1 text-sm font-medium capitalize text-emerald-100/70">
+          {labelMes}
+        </p>
       </section>
 
-      {/* GRADE DE ÍCONES REDONDINHOS */}
-      <section className="grid grid-cols-2 gap-6 px-4 sm:grid-cols-3">
-        {atalhos.map((item) => (
+      <div className="mx-auto max-w-lg px-4 pb-10">
+        {/* ATALHOS */}
+        <section className="-mt-5">
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+            {atalhos.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex flex-col items-center gap-2 rounded-2xl bg-white px-2 py-4 shadow-md transition-all active:scale-95 hover:shadow-lg"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-2xl">
+                  {item.icon}
+                </div>
+                <span className="text-[11px] font-semibold text-emerald-900 text-center leading-tight">
+                  {item.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* CARD DE RELATÓRIOS */}
+        <section className="mt-6">
           <Link
-            key={item.href}
-            href={item.href}
-            className="flex flex-col items-center gap-2"
+            href="/relatorios"
+            className="block rounded-3xl bg-emerald-900 px-5 py-5 shadow-xl transition-all active:scale-[0.98] hover:bg-emerald-800"
           >
-            {/* Bolinha verde com emoji dentro */}
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#c9f5d5] text-2xl shadow-sm">
-              {item.icon}
+            {/* Cabeçalho do card (ícone + título + mês) */}
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                {/* Bolinha com ícone de gráfico */}
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-emerald-700/60 text-xl">
+                  📊
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-400">
+                    Relatórios
+                  </span>
+                  <span className="text-base font-bold capitalize text-white">
+                    {labelMes}
+                  </span>
+                </div>
+              </div>
+
+              {/* Setinha discreta à direita (mais desktop) */}
+              <div className="hidden sm:flex h-8 w-8 items-center justify-center rounded-full bg-emerald-700/50 text-emerald-300">
+                <span className="text-lg">›</span>
+              </div>
+              <span className="text-xl text-emerald-400 sm:hidden">›</span>
             </div>
-            <span className="text-[12px] font-medium text-emerald-900 text-center">
-              {item.label}
-            </span>
+
+            {/* Grid de métricas */}
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="rounded-2xl bg-emerald-800/60 px-4 py-3">
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-emerald-400">
+                  Receita
+                </span>
+                <p className="mt-1 text-xl font-bold leading-tight text-emerald-300">
+                  {receitaText}
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-rose-900/40 px-4 py-3">
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-rose-300">
+                  Despesa
+                </span>
+                <p className="mt-1 text-xl font-bold leading-tight text-rose-300">
+                  {despesaText}
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-emerald-800/60 px-4 py-3">
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-emerald-400">
+                  Lucro
+                </span>
+                <p
+                  className={`mt-1 text-xl font-bold leading-tight ${
+                    resumo && resumo.lucro < 0
+                      ? 'text-rose-300'
+                      : 'text-emerald-300'
+                  }`}
+                >
+                  {lucroText}
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-amber-900/30 px-4 py-3">
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-amber-400">
+                  Ovos
+                </span>
+                <p className="mt-1 text-xl font-bold leading-tight text-amber-300">
+                  {ovosText}
+                </p>
+              </div>
+            </div>
+
+            <p className="mt-4 text-[10px] text-emerald-400/70">
+              Toque para ver o relatório completo com detalhes de todas as
+              atividades.
+            </p>
           </Link>
-        ))}
-      </section>
-
-      {/* CARD DE RELATÓRIOS */}
-      <section className="px-4">
-        <Link
-          href="/relatorios"
-          className="block rounded-[24px] border border-emerald-900/10 bg-white px-4 py-4 shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
-        >
-          {/* Cabeçalho do card (ícone + título + mês) */}
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              {/* Bolinha com ícone de gráfico */}
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#c9f5d5] text-2xl">
-                📊
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[11px] uppercase tracking-[0.2em] text-emerald-700">
-                  Relatórios
-                </span>
-                <span className="text-sm font-semibold text-emerald-900">
-                  {labelMes}
-                </span>
-              </div>
-            </div>
-
-            {/* Setinha discreta à direita (mais desktop) */}
-            <div className="hidden sm:flex h-8 w-8 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
-              <span className="text-lg">›</span>
-            </div>
-          </div>
-
-          {/* Linha com receita, despesa, lucro, ovos */}
-          <div className="mt-4 grid grid-cols-2 gap-3 text-[11px] text-emerald-900 sm:grid-cols-4">
-            <div className="flex flex-col">
-              <span className="uppercase tracking-[0.22em] text-emerald-600 text-[10px]">
-                Receita
-              </span>
-              <span className="mt-1 text-sm font-semibold">{receitaText}</span>
-            </div>
-
-            <div className="flex flex-col">
-              <span className="uppercase tracking-[0.22em] text-emerald-600 text-[10px]">
-                Despesa
-              </span>
-              <span className="mt-1 text-sm font-semibold">{despesaText}</span>
-            </div>
-
-            <div className="flex flex-col">
-              <span className="uppercase tracking-[0.22em] text-emerald-600 text-[10px]">
-                Lucro
-              </span>
-              <span className="mt-1 text-sm font-semibold">{lucroText}</span>
-            </div>
-
-            <div className="flex flex-col">
-              <span className="uppercase tracking-[0.22em] text-emerald-600 text-[10px]">
-                Ovos
-              </span>
-              <span className="mt-1 text-sm font-semibold">{ovosText}</span>
-            </div>
-          </div>
-
-          <p className="mt-3 text-[10px] text-emerald-700/80">
-            Toque para ver o relatório completo com detalhes de todas as
-            atividades.
-          </p>
-        </Link>
-      </section>
+        </section>
+      </div>
     </div>
   )
 }
