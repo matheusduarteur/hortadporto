@@ -5,12 +5,43 @@ import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const pathname = usePathname()
+  const router = useRouter()
+
+  const isHome = pathname === '/'
+
+  const handleBack = () => {
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      router.back()
+    } else {
+      router.push('/')
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-[#f7f3ea] text-slate-900 flex flex-col">
+    <div className="min-h-screen bg-[#f7f3ea] text-slate-900 flex flex-col relative">
       {/* TOPO: LOGO + CLIMA */}
       <Header />
 
-      {/* CONTEÚDO: aqui entra o page.tsx (Painel da Horta, emojis, relatório) */}
+      {/* BOTÃO DE VOLTAR FLUTUANTE (MOBILE, FORA DA HOME) */}
+      {!isHome && (
+        <button
+          onClick={handleBack}
+          className="
+            fixed left-3 top-[62px] z-30
+            flex h-9 w-9 items-center justify-center
+            rounded-full bg-emerald-500 text-white
+            shadow-lg shadow-emerald-800/25
+            border border-emerald-700/60
+            md:hidden
+          "
+          aria-label="Voltar"
+        >
+          ‹
+        </button>
+      )}
+
+      {/* CONTEÚDO */}
       <main className="flex-1 px-4 pb-6 pt-3 md:px-8 md:pb-8">
         <div className="mx-auto max-w-6xl">{children}</div>
       </main>
@@ -23,36 +54,11 @@ export function AppShell({ children }: { children: ReactNode }) {
    ========================= */
 
 function Header() {
-  const pathname = usePathname()
-  const router = useRouter()
-
-  const isHome = pathname === '/'
-
-  const handleBack = () => {
-    // se tiver histórico, volta; se não, vai pra home
-    if (typeof window !== 'undefined' && window.history.length > 1) {
-      router.back()
-    } else {
-      router.push('/')
-    }
-  }
-
   return (
     <header className="w-full border-b border-emerald-900/10 bg-[#fdf9ec]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-8">
         {/* LOGO + NOME DO APP À ESQUERDA */}
         <div className="flex items-center gap-3">
-          {/* BOTÃO DE VOLTAR (aparece só fora da home, e só no mobile) */}
-          {!isHome && (
-            <button
-              onClick={handleBack}
-              className="mr-1 flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-800 shadow-sm md:hidden"
-              aria-label="Voltar"
-            >
-              ‹
-            </button>
-          )}
-
           {/* ÍCONE / LOGO REDONDO */}
           <div className="h-10 w-10 rounded-full overflow-hidden border border-emerald-700/40 bg-[#fdf9ec] flex items-center justify-center shadow-sm">
             <img
@@ -117,7 +123,6 @@ function WeatherCard() {
 
     async function fetchWeather() {
       try {
-        // AQUI usamos sua latitude/longitude de Mirronhos / Morrinhos - Poções - BA
         const res = await fetch(
           'https://api.openweathermap.org/data/2.5/weather?lat=-14.620972971351303&lon=-40.29520315068608&units=metric&lang=pt_br&appid=' +
             apiKey
