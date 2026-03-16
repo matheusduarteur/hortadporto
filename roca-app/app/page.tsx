@@ -39,8 +39,10 @@ function getMonthRange(date = new Date()) {
   const inicioStr = `${inicio.getFullYear()}-${pad(inicio.getMonth() + 1)}-01`
   const fimStr = `${fim.getFullYear()}-${pad(fim.getMonth() + 1)}-01`
 
-  // label tipo "Março 2026"
-  const labelMes = inicio.toLocaleDateString('pt-BR', {
+  // label tipo "segunda-feira, 16 de março de 2026"
+  const labelMes = new Date().toLocaleDateString('pt-BR', {
+    weekday: 'long',
+    day: '2-digit',
     month: 'long',
     year: 'numeric',
   })
@@ -49,9 +51,14 @@ function getMonthRange(date = new Date()) {
 }
 
 export default function DashboardPage() {
-  const [{ inicioStr, fimStr, labelMes }] = useState(() => getMonthRange())
+  const [{ inicioStr, fimStr, labelMes: initialLabelMes }] = useState(() =>
+    getMonthRange()
+  )
   const [resumo, setResumo] = useState<DashboardResumo | null>(null)
   const [loadingResumo, setLoadingResumo] = useState(true)
+
+  // estado separado só pra label da data, pra poder atualizar
+  const [labelMes, setLabelMes] = useState(initialLabelMes)
 
   useEffect(() => {
     async function carregarResumo() {
@@ -122,6 +129,29 @@ export default function DashboardPage() {
 
     carregarResumo()
   }, [inicioStr, fimStr])
+
+  // Atualiza a label da data quando a aba/app volta a ficar visível
+  useEffect(() => {
+    function updateLabelDate() {
+      const { labelMes } = getMonthRange()
+      setLabelMes(labelMes)
+    }
+
+    function handleVisibilityChange() {
+      if (document.visibilityState === 'visible') {
+        updateLabelDate()
+      }
+    }
+
+    // atualiza já na montagem, só pra garantir
+    updateLabelDate()
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [])
 
   const receitaText =
     resumo && !loadingResumo
